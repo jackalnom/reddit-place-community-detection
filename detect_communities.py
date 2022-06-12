@@ -9,10 +9,6 @@ import sys
 import logging
 import pickle
 
-date = 'Test_Cluster'
-dir = "D:/to_union/"
-uniong = None
-
 def strip_dates(e):
     splits = e.split('-')
     if (splits[len] == 4):
@@ -57,10 +53,9 @@ for i in range(100):
         break
 
     logging.info("parsing subgraph " + str(i))
-    g1 = part.subgraphs()[i]
+    g1 = part.subgraph(i)
 
-    print("writing cluster - " + str(i))
-
+    logging.info("writing cluster - " + str(i))
     stripped_pixel_list = [ele for ele in g1.vs()["name"] if "==" not in ele]
     stripped_pixel_list = list(map(lambda e: strip_dates(e), stripped_pixel_list))
     np.savetxt(directory + "/cluster pixels " + str(i) + ".txt", stripped_pixel_list, fmt="%s")
