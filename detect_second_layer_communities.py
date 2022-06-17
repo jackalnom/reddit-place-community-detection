@@ -11,6 +11,7 @@ import pickle
 import leidenalg as la
 import json
 from collections import defaultdict
+import leidenalg as la
 
 def strip_dates(e):
     splits = e.split('-')
@@ -38,13 +39,13 @@ logging.info("read dict")
 g.vs()[0]["label"] = "France"
 g.vs()[1]["label"] = "Latin America"
 g.vs()[2]["label"] = "Turkey"
-g.vs()[3]["label"] = "xQc Streamer"
-g.vs()[4]["label"] = "Russian Streamers"
+g.vs()[3]["label"] = "xQc"
+g.vs()[4]["label"] = "Bratishknioff/drakeoffc"
 g.vs()[5]["label"] = "USA"
 g.vs()[6]["label"] = "Germany"
 g.vs()[7]["label"] = "LGBTQ+"
 g.vs()[8]["label"] = "osu!"
-g.vs()[9]["label"] = "Twitch Streamer"
+g.vs()[9]["label"] = "Quackity/Karl Jacobs"
 g.vs()[10]["label"] = "Canada"
 g.vs()[11]["label"] = "Poland"
 g.vs()[12]["label"] = "Netherlands"
@@ -52,16 +53,16 @@ g.vs()[13]["label"] = "Gamestop"
 g.vs()[14]["label"] = "India"
 g.vs()[15]["label"] = "UK"
 g.vs()[16]["label"] = "Italy"
-g.vs()[17]["label"] = "Destiny Streamer"
+g.vs()[17]["label"] = "Destiny"
 g.vs()[18]["label"] = "Palestine/Israel"
 g.vs()[19]["label"] = "Romania/Hungary"
 g.vs()[20]["label"] = "One Piece"
 g.vs()[21]["label"] = "Argentina"
 g.vs()[22]["label"] = "Runescape"
-g.vs()[23]["label"] = "Ludwig Streamer"
+g.vs()[23]["label"] = "Ludwig"
 g.vs()[24]["label"] = "My Little Pony"
 g.vs()[25]["label"] = "Rappers"
-g.vs()[26]["label"] = "Twitch Streamers"
+g.vs()[26]["label"] = "HasanAbi/willneff"
 g.vs()[27]["label"] = "Hollow Knight/Elden Ring"
 g.vs()[28]["label"] = "Portugal"
 g.vs()[29]["label"] = "Columbia"
@@ -70,7 +71,7 @@ g.vs()[31]["label"] = "Blue Square"
 g.vs()[32]["label"] = "Ukraine"
 g.vs()[33]["label"] = "Quebec"
 g.vs()[34]["label"] = "Star Wars"
-g.vs()[35]["label"] = "Minecraft Streamers"
+g.vs()[35]["label"] = "Minecraft"
 g.vs()[36]["label"] = "Czechia/Slovakia"
 g.vs()[37]["label"] = "Lithuania"
 g.vs()[38]["label"] = "Sweden"
@@ -83,15 +84,26 @@ g.vs()[44]["label"] = "Grand Theft Auto"
 g.vs()[45]["label"] = "Chile"
 g.vs()[46]["label"] = "Denmark"
 g.vs()[47]["label"] = "Furry/NATO"
-g.vs()[48]["label"] = "Twitch Streamer"
+g.vs()[48]["label"] = "Forsen/Zoil"
 g.vs()[49]["label"] = "Formula 1"
 
 logging.info("partitioning")
-to_delete_ids = [v.index for v in g.vs if v.index >= 200]
+to_delete_ids = [v.index for v in g.vs if v.index >= 50]
 g.delete_vertices(to_delete_ids)
 
+for v in g.vs:
+    v['weight'] = int(v['weight'])
 
-part = g.community_multilevel(weights="weight", return_levels=True)
+#part = g.community_multilevel(weights="weight", return_levels=True)
+#part = g.community_leiden(weights=g.es()['weight'], resolution_parameter=1)
+#part = g.community_fastgreedy(weights='weight')
+#part = g.community_optimal_modularity(weights='weight')
+part = []
+part.append(la.find_partition(g, la.RBERVertexPartition, weights='weight', node_sizes='weight', resolution_parameter=3, n_iterations=-1)) # try 3?
+#part.append(la.find_partition(g, la.RBERVertexPartition, weights='weight', node_sizes='weight', resolution_parameter=1, n_iterations=-1)) # try 3?
+print(len(part[0]))
+
+
 
 nodes = {}
 index = 0
