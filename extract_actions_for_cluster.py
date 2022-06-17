@@ -13,7 +13,7 @@ logging.info("building dictionary")
 
 users = {}
 
-user_dir = "D:/communities_CPM_no_adjacency_000005/"
+user_dir = "D:/communities_CPM_no_adjacency_0000065/"
 log_dir = user_dir + "logs/"
 os.makedirs(log_dir, exist_ok=True)
 

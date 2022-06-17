@@ -17,20 +17,12 @@ def hex_to_rgb(value):
     value = value.lstrip('#')
     lv = len(value)
     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
-#end_date = "2022-04-04 22:47:30"
-end_date = "2022-04-04 20:00"
-dir = "D:/communities_CPM_no_adjacency_000005/logs/"
-logging.info("starting " + dir)
 
+dir = "D:/communities_CPM_no_adjacency_0000065/logs/"
 
-with concurrent.futures.ProcessPoolExecutor() as executor:
-    secs = [5, 4, 3, 2, 1]
-    pool = executor.map(useless_function, sec)
-    for res in pool:
-        print(f'Return Value: {res}')
+def create_image(full_file):
+    end_date = "2022-04-04 20:00"
 
-files = Path(dir).glob('*.txt')
-for full_file in files:
     w, h = 2000, 2000
     data = np.zeros((h, w, 4), dtype=np.uint8)
     count = np.zeros((h, w, 1), dtype=int)
@@ -63,3 +55,11 @@ for full_file in files:
     os.makedirs(dir + "images/", exist_ok=True)
     img.save(dir + "images/" + full_file.name + '.png')
     logging.info("wrote " + full_file.name)
+
+if __name__ == '__main__':
+    logging.info("starting " + dir)
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        files = Path(dir).glob('*.txt')
+        pool = executor.map(create_image, files)
+
+

@@ -42,7 +42,7 @@ g.es["weight"] = 1
 
 logging.info("partitioning")
 #part = g.community_leiden(objective_function='CPM', resolution_parameter=0.0001)
-part = la.find_partition(g, la.CPMVertexPartition, resolution_parameter = 0.000006, n_iterations=60) # try 3?
+part = la.find_partition(g, la.CPMVertexPartition, resolution_parameter = 0.0000065, n_iterations=50) # try 3?
 #part = la.find_partition(g, la.RBConfigurationVertexPartition, resolution_parameter = 0.05)
 #part = la.find_partition(g, la.ModularityVertexPartition, n_iterations=10)
 
@@ -58,11 +58,11 @@ cluster_graph = part.cluster_graph(
     },
 )
 
-cluster_graph.write_picklez("D:/CPM_no_adjacency_000006.pz")
+cluster_graph.write_picklez("D:/CPM_no_adjacency_0000065.pz")
 cluster_graph = None
 
 logging.info("wrote overall cluster graph")
-directory = "D:/communities_CPM_no_adjacency_000006"
+directory = "D:/communities_CPM_no_adjacency_0000065"
 os.makedirs(directory, exist_ok=True)
 for i in range(100):
     if i >= len(part):
