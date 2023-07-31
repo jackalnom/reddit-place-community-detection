@@ -28,7 +28,7 @@ logging.basicConfig(level=logging.INFO,
                     datefmt="%Y-%m-%d %H:%M:%S")
 
 logging.info("reading dict")
-file = open("D:/no_adjacency_unioned_dict.pz",'rb')
+file = open("D:/user_mapping.pickle",'rb')
 links = pickle.load(file)
 file.close()
 logging.info("read dict")
@@ -42,9 +42,9 @@ g.es["weight"] = 1
 
 logging.info("partitioning")
 #part = g.community_leiden(objective_function='CPM', resolution_parameter=0.0001)
-part = la.find_partition(g, la.CPMVertexPartition, resolution_parameter = 0.0000065, n_iterations=50) # try 3?
+#part = la.find_partition(g, la.CPMVertexPartition, resolution_parameter = 0.0000065, n_iterations=50) # try 3?
 #part = la.find_partition(g, la.RBConfigurationVertexPartition, resolution_parameter = 0.05)
-#part = la.find_partition(g, la.ModularityVertexPartition, n_iterations=10)
+part = la.find_partition(g, la.ModularityVertexPartition, n_iterations=10)
 
 g = None
 
@@ -62,7 +62,7 @@ cluster_graph.write_picklez("D:/CPM_no_adjacency_0000065.pz")
 cluster_graph = None
 
 logging.info("wrote overall cluster graph")
-directory = "D:/communities_CPM_no_adjacency_0000065"
+directory = "D:/communities_modularity"
 os.makedirs(directory, exist_ok=True)
 for i in range(100):
     if i >= len(part):
