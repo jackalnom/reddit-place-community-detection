@@ -50,10 +50,10 @@ def read_csvs_to_dict(directory):
 
 if __name__ == '__main__':
     # Read the CSV files into a dictionary
-    data = read_csvs_to_dict('D:/place 2023')
+    data = read_csvs_to_dict('D:/csv')
     print(f"read {len(data)} rows")
     print("writing pickle")
-    with open('D:/user_mapping.pickle', 'wb') as handle:
+    with open('D:/canada.pickle', 'wb') as handle:
         pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
     print("wrote pickle")
     # Print the data

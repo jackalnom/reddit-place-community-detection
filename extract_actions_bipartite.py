@@ -11,27 +11,15 @@ logging.basicConfig(level=logging.INFO,
 i = 0
 logging.info("building dictionary")
 
-users = {}
+user_file = "D:/canada_communities_CPM/cluster users 0.txt"
 
-user_dir = "D:/canada_communities_CPM/"
-log_dir = user_dir + "logs/"
-os.makedirs(log_dir, exist_ok=True)
-
-files = Path(user_dir).glob('*.txt')
-for full_file in files:
-    with open(full_file, "r") as f:
-        output_file = open(log_dir + full_file.name + ".txt", 'a')
-
-        user_list = [line.rstrip() for line in f.readlines()]
-
-        for user in user_list:
-            users[user] = output_file
+with open(user_file, "r") as f:
+    user_list = [line.rstrip() for line in f.readlines()]
 
         # assign users to output file in a dictionary
 logging.info("built dictionary")
 
 logging.info("extracting action logs")
-#directory = "D:/place 2023"
 directory = "D:/csv"
 # Get a list of all CSV files in the directory
 csv_files = [f for f in os.listdir(directory) if f.endswith('.csv')]
@@ -44,5 +32,7 @@ for csv_file in csv_files:
             user_id = line.split(",")[1]
             if user_id in users:
                 # Append-adds at last
-                users[user_id].write(line)
+                in_file.write(line)
+            else:
+                not_in_file.write(line)
     logging.info("done")

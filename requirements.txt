@@ -1,0 +1,4 @@
+leidenalg
+igraph
+pillow
+numpy

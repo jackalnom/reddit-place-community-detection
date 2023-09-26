@@ -28,7 +28,7 @@ logging.basicConfig(level=logging.INFO,
                     datefmt="%Y-%m-%d %H:%M:%S")
 
 logging.info("reading dict")
-file = open("D:/user_mapping.pickle",'rb')
+file = open("D:/canada.pickle",'rb')
 links = pickle.load(file)
 file.close()
 logging.info("read dict")
@@ -42,27 +42,27 @@ g.es["weight"] = 1
 
 logging.info("partitioning")
 #part = g.community_leiden(objective_function='CPM', resolution_parameter=0.0001)
-#part = la.find_partition(g, la.CPMVertexPartition, resolution_parameter = 0.0000065, n_iterations=50) # try 3?
+part = la.find_partition(g, la.CPMVertexPartition, resolution_parameter = 0.000004, n_iterations=10) # try 3?
 #part = la.find_partition(g, la.RBConfigurationVertexPartition, resolution_parameter = 0.05)
-part = la.find_partition(g, la.ModularityVertexPartition, n_iterations=10)
+#part = la.find_partition(g, la.ModularityVertexPartition, n_iterations=50)
 
 g = None
 
 logging.info("partitioned")
-cluster_graph = part.cluster_graph(
-    combine_vertices={
-        "weight": "sum",
-    },
-    combine_edges={
-        "weight": "sum",
-    },
-)
+# cluster_graph = part.cluster_graph(
+#     combine_vertices={
+#         "weight": "sum",
+#     },
+#     combine_edges={
+#         "weight": "sum",
+#     },
+# )
 
-cluster_graph.write_picklez("D:/CPM_no_adjacency_0000065.pz")
-cluster_graph = None
+# cluster_graph.write_picklez("D:/CPM_no_adjacency_0000065.pz")
+# cluster_graph = None
 
-logging.info("wrote overall cluster graph")
-directory = "D:/communities_modularity"
+# logging.info("wrote overall cluster graph")
+directory = "D:/canada_communities_CPM"
 os.makedirs(directory, exist_ok=True)
 for i in range(100):
     if i >= len(part):
@@ -72,11 +72,7 @@ for i in range(100):
     g1 = part.subgraph(i)
 
     logging.info("writing cluster - " + str(i))
-    stripped_pixel_list = [ele for ele in g1.vs()["name"] if "==" not in ele]
-    stripped_pixel_list = list(map(lambda e: strip_dates(e), stripped_pixel_list))
-    np.savetxt(directory + "/cluster pixels " + str(i) + ".txt", stripped_pixel_list, fmt="%s")
-
-    stripped_user_list = [ele for ele in g1.vs()["name"] if "==" in ele]
+    stripped_user_list = [ele for ele in g1.vs()["name"] if isinstance(ele, str)]
     np.savetxt(directory + "/cluster users " + str(i) + ".txt", stripped_user_list, fmt="%s")
 
     logging.info("wrote subgraph " + str(i))

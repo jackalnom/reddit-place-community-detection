@@ -13,26 +13,27 @@ logging.info("building dictionary")
 
 users = {}
 
-user_dir = "D:/canada_communities_CPM/"
-log_dir = user_dir + "logs/"
-os.makedirs(log_dir, exist_ok=True)
+user_file = "D:/good_vs_bad_pixels_canada.csv"
 
-files = Path(user_dir).glob('*.txt')
-for full_file in files:
-    with open(full_file, "r") as f:
-        output_file = open(log_dir + full_file.name + ".txt", 'a')
 
-        user_list = [line.rstrip() for line in f.readlines()]
+with open(user_file, "r") as f:
+    good_actions_file = open("D:/good/good_actions.txt", 'a')
+    bad_actions_file = open("D:/good/bad_actions.txt", 'a')
 
-        for user in user_list:
-            users[user] = output_file
-
+    csv_reader = csv.reader(f)
+    for line in csv_reader:
+        user = line[0]
+        good_actions = line[1]
+        if good_actions == 'good':
+            users[user] = good_actions_file
+        else:
+            users[user] = bad_actions_file
         # assign users to output file in a dictionary
 logging.info("built dictionary")
 
 logging.info("extracting action logs")
-#directory = "D:/place 2023"
-directory = "D:/csv"
+directory = "D:/place 2023"
+#directory = "D:/csv"
 # Get a list of all CSV files in the directory
 csv_files = [f for f in os.listdir(directory) if f.endswith('.csv')]
 

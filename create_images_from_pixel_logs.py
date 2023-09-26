@@ -16,7 +16,7 @@ def hex_to_rgb(value):
     lv = len(value)
     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
-dir = "D:/communities_CPM_no_adjacency_000007"
+dir = "D:/canada_communitieslogs/"
 files = Path(dir).glob('cluster pixels *.txt')
 for full_file in files:
     w, h = 2000, 2000
